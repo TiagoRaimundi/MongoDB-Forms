@@ -18,7 +18,7 @@ app.listen(port, () => {
 });
 
 mongoose 
-  .connect("................................................................"
+  .connect("..............................."
   , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -39,8 +39,8 @@ const sendVerificationEmail = async (email, verificationToken) => {
     // Configure the email service or SMTP details here
     service: "gmail",
     auth: {
-      user: ".......................",
-      pass: ".......................",
+      user: "................",
+      pass: "...............",
     },
   });
 
@@ -49,7 +49,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
     from: "amazon.com",
     to: email,
     subject: "Email Verification",
-    text: `Please click the following link to verify your email: http://localhost:8000/verify/${verificationToken}`,
+    text: `Please click the following link to verify your email: http://.........:8000/verify/${verificationToken}`,
   };
 
   // Send the email
@@ -63,6 +63,9 @@ const sendVerificationEmail = async (email, verificationToken) => {
 // Register a new user
 // ...existing imports and setup ...
 
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -74,8 +77,11 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // Create a new user
-    const newUser = new User({ name, email, password });
+    // Encrypt the password
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create a new user with the hashed password
+    const newUser = new User({ name, email, password: hashedPassword });
 
     // Generate and store the verification token
     newUser.verificationToken = crypto.randomBytes(20).toString("hex");
@@ -99,6 +105,7 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ message: "Registration failed" });
   }
 });
+
 
 //endpoint to verify the email
 app.get("/verify/:token", async (req, res) => {
@@ -132,6 +139,8 @@ const generateSecretKey = () => {
 const secretKey = generateSecretKey();
 
 //endpoint to login the user!
+
+
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -142,8 +151,9 @@ app.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    //check if the password is correct
-    if (user.password !== password) {
+    //check if the password is correct using bcrypt
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
 

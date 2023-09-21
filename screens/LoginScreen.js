@@ -20,6 +20,25 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try{
+        const token = await AsyncStorage.getItem("authToken")
+
+        if(token){
+          navigation.replace("Main")
+        }
+
+      }catch(err){
+        console.log("error message", err)
+      }
+    }
+    checkLoginStatus()
+
+  }, [])
+
+
   const handleLogin = () => {
     const user = {
       email: email,
@@ -27,12 +46,12 @@ const LoginScreen = () => {
     };
 
     axios
-      .post("http://..............:8000/login", user)
+      .post("............................/login", user)
       .then((response) => {
         console.log(response);
         const token = response.data.token;
         AsyncStorage.setItem("authToken", token);
-        navigation.replace("Home");
+        navigation.replace("Main");
       })
       .catch((error) => {
         Alert.alert("Login Error", "Invalid Email");

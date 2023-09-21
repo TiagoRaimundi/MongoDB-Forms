@@ -30,7 +30,7 @@ const RegisterScreen = () => {
 
     // send a POST  request to the backend API to register the user
     axios
-      .post("http://..................:8000/register", user)
+      .post("......................./register", user)
       .then((response) => {
         console.log(response);
         Alert.alert(
@@ -48,6 +48,7 @@ const RegisterScreen = () => {
         );
         console.log("registration failed", error);
       });
+   
   };
   return (
     <SafeAreaView

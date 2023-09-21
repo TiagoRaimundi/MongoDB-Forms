@@ -18,7 +18,7 @@ app.listen(port, () => {
 });
 
 mongoose 
-  .connect("..............................."
+  .connect("..........................."
   , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -39,8 +39,8 @@ const sendVerificationEmail = async (email, verificationToken) => {
     // Configure the email service or SMTP details here
     service: "gmail",
     auth: {
-      user: "................",
-      pass: "...............",
+      user: "...................",
+      pass: "...................",
     },
   });
 
@@ -49,7 +49,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
     from: "amazon.com",
     to: email,
     subject: "Email Verification",
-    text: `Please click the following link to verify your email: http://.........:8000/verify/${verificationToken}`,
+    text: `Please click the following link to verify your email:.....................:8000/verify/${verificationToken}`,
   };
 
   // Send the email
